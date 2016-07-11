@@ -1,6 +1,10 @@
 # rest-core
 Simple custom RESTful Framework designed for webapp2 on Google Appengine
 
+
+NOTE: This specific codebase is not currently in use and is not complete. Use at your own risk.
+
+
 Initial Development Setup
 -----
 To develop this project, check out `git@github.com:blainegarrett/rest-core.git`
@@ -20,7 +24,7 @@ Running Unit Tests
 Running Example App
 -----
 * cd to check out directory
-* `dev_appserver.py example`
+* `dev_appserver.py .`
 Open in browser or a REST application like PAW
 
 
