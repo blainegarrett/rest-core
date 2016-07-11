@@ -10,4 +10,4 @@ install:
 
 
 unit:
-	nosetests -sv -a is_unit --with-gae --gae-application=rest-core --with-yanc
+	nosetests -sv -a is_unit --with-gae --gae-application=rest_core --with-yanc

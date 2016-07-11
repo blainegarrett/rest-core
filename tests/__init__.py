@@ -9,7 +9,7 @@ import sys
 from google.appengine.ext import testbed
 
 # Bootstrap the external libs
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../rest-core/'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../rest_core/'))
 
 
 class BaseCase(unittest.TestCase):

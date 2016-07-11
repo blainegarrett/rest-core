@@ -17,6 +17,13 @@ Running Unit Tests
 -----
 `make unit`
 
+Running Example App
+-----
+* cd to check out directory
+* `dev_appserver.py example`
+Open in browser or a REST application like PAW
+
+
 
 TODO
 -----
