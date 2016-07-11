@@ -41,4 +41,4 @@ automatic_scaling:
 
 handlers:
 - url: .*
-  script: main.app
+  script: example.app

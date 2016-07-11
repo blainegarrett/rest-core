@@ -6,7 +6,7 @@ import webapp2
 import json
 
 # Bootstrap the external libs
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../external'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'external'))
 
 
 def serve_response(response, status, result, messages=None):
