@@ -1,6 +1,6 @@
 import voluptuous
 from tests import BaseCase
-import resource
+import resources
 
 
 class TestObj(object):
@@ -24,13 +24,13 @@ class ResourceTestCase(RestBaseCase):
         fields = ['list', 'of', 'things']
 
         # "Strings are not valid object for Resources"
-        self.assertRaises(TypeError, resource.Resource, 'cheese', fields)
-        self.assertRaises(TypeError, resource.Resource, None, 'not a list')
+        self.assertRaises(TypeError, resources.Resource, 'cheese', fields)
+        self.assertRaises(TypeError, resources.Resource, None, 'not a list')
 
     def test_init_no_obj(self):
         fields = ['list', 'of', 'things']
 
-        r = resource.Resource(None, fields)
+        r = resources.Resource(None, fields)
 
         self.assertEqual(r.obj, None)
         self.assertEqual(r.fields, fields)
@@ -43,12 +43,12 @@ class ResourceTestCaseFromDict(RestBaseCase):
 
     def test_base(self):
         fields = [
-            resource.RestField('name', required=True),
-            resource.RestField('size', required=False),
+            resources.RestField('name', required=True),
+            resources.RestField('size', required=False),
         ]
         data = {'size': 'large', 'name': 'Bob'}
 
-        r = resource.Resource(None, fields)
+        r = resources.Resource(None, fields)
         result = r.from_dict(data)
         self.assertDictEqual(result, data)
 
@@ -58,12 +58,12 @@ class ResourceTestCaseFromDict(RestBaseCase):
         """
 
         fields = [
-            resource.RestField('name', required=True),
-            resource.RestField('size', required=False),
+            resources.RestField('name', required=True),
+            resources.RestField('size', required=False),
         ]
         data = {'name': 'Bob'}
 
-        r = resource.Resource(None, fields)
+        r = resources.Resource(None, fields)
         result = r.from_dict(data)
         self.assertDictEqual(result, data)
 
@@ -75,18 +75,18 @@ class ResourceTestCaseFromDict(RestBaseCase):
         data = {'color': 'orange', 'size': 'large'}
         fields = []
 
-        r = resource.Resource(None, fields)
-        self.assertRaises(resource.UnknownFieldError, r.from_dict, data)
+        r = resources.Resource(None, fields)
+        self.assertRaises(resources.UnknownFieldError, r.from_dict, data)
 
     def test_required_fields(self):
         fields = [
-            resource.RestField('name', required=True),
-            resource.RestField('size', required=False),
+            resources.RestField('name', required=True),
+            resources.RestField('size', required=False),
         ]
         data = {'size': 'large'}
 
-        r = resource.Resource(None, fields)
-        self.assertRaises(resource.RequiredFieldError, r.from_dict, data)
+        r = resources.Resource(None, fields)
+        self.assertRaises(resources.RequiredFieldError, r.from_dict, data)
 
     def test_output_only_fields(self):
         """
@@ -96,14 +96,14 @@ class ResourceTestCaseFromDict(RestBaseCase):
         """
 
         fields = [
-            resource.RestField('name', required=True),
-            resource.RestField('size', required=False),
-            resource.RestField('thing', output_only=True),
+            resources.RestField('name', required=True),
+            resources.RestField('size', required=False),
+            resources.RestField('thing', output_only=True),
         ]
         data = {'size': 'large', 'thing': 'Yep'}
 
-        r = resource.Resource(None, fields)
-        self.assertRaises(resource.UnknownFieldError, r.from_dict, data)
+        r = resources.Resource(None, fields)
+        self.assertRaises(resources.UnknownFieldError, r.from_dict, data)
 
 
 class ResourceTestCaseToDict(RestBaseCase):
@@ -117,11 +117,11 @@ class ResourceTestCaseToDict(RestBaseCase):
 
         obj = {'name': 'Bob', 'size': 'large', 'color': 'orange'}
         fields = [
-            resource.RestField('name', required=True),
-            resource.RestField('size', required=False),
+            resources.RestField('name', required=True),
+            resources.RestField('size', required=False),
         ]
 
-        r = resource.Resource(obj, fields)
+        r = resources.Resource(obj, fields)
         result = r.to_dict()
 
         # This ensures that other props on the "obj" do not get output to dict
@@ -137,7 +137,7 @@ class ResourceFieldInitTests(RestBaseCase):
         """
         """
 
-        self.assertRaises(resource.UnsupportedFieldProp, resource.RestField, 6)
+        self.assertRaises(resources.UnsupportedFieldProp, resources.RestField, 6)
 
 
 class ResourceFieldFromResourceTests(RestBaseCase):
@@ -148,19 +148,19 @@ class ResourceFieldFromResourceTests(RestBaseCase):
     def test_against_dict(self):
         """
         """
-        self.assertEqual('Bob', resource.RestField('name').from_resource({'name': 'Bob'}, 'name'))
+        self.assertEqual('Bob', resources.RestField('name').from_resource({'name': 'Bob'}, 'name'))
 
     def test_against_obj(self):
         """
         """
         obj = TestObj()
         obj.name = 'Bob'
-        self.assertEqual('Bob', resource.RestField('name').from_resource(obj, 'name'))
+        self.assertEqual('Bob', resources.RestField('name').from_resource(obj, 'name'))
 
 
 class ResourceFieldToResourceTests(RestBaseCase):
     """
-    Tests surrounding getting a field value from a input resource.
+    Tests surrounding getting a field value from a input resources.
     """
 
     def test_base(self):
@@ -168,15 +168,15 @@ class ResourceFieldToResourceTests(RestBaseCase):
         """
 
         input_data = {'name': 'Bob'}
-        self.assertEqual('Bob', resource.RestField('name').to_resource(input_data))
+        self.assertEqual('Bob', resources.RestField('name').to_resource(input_data))
 
     def test_required(self):
         """
         """
         input_data = {'name': ''}
 
-        r = resource.RestField('name', required=True)
-        self.assertRaises(resource.RequiredFieldError, r.to_resource, input_data)
+        r = resources.RestField('name', required=True)
+        self.assertRaises(resources.RequiredFieldError, r.to_resource, input_data)
 
     def test_output_only(self):
         """
@@ -184,8 +184,8 @@ class ResourceFieldToResourceTests(RestBaseCase):
 
         input_data = {'size': 'large', 'thing': 'Yep'}
 
-        r = resource.RestField('thing', output_only=True)
-        self.assertRaises(resource.OutputOnlyError, r.to_resource, input_data)
+        r = resources.RestField('thing', output_only=True)
+        self.assertRaises(resources.OutputOnlyError, r.to_resource, input_data)
 
     def test_validation(self):
         """
@@ -194,8 +194,8 @@ class ResourceFieldToResourceTests(RestBaseCase):
 
         input_data = {'size': 'large', 'thing': 'Yep'}
 
-        r = resource.RestField('size', validator=voluptuous.Coerce(int))
-        self.assertRaises(resource.RestValueException, r.to_resource, input_data)
+        r = resources.RestField('size', validator=voluptuous.Coerce(int))
+        self.assertRaises(resources.RestValueException, r.to_resource, input_data)
         # Size cannot be coerced to an int...
 
 
@@ -207,14 +207,14 @@ class RestIntegrationTests(RestBaseCase):
         """
 
         fields = [
-            resource.RestField('sku', output_only=True),
-            resource.RestField('name', required=True),
-            resource.RestField('size')]
+            resources.RestField('sku', output_only=True),
+            resources.RestField('name', required=True),
+            resources.RestField('size')]
 
         # Create A Resource from an object - Base Test
         obj = {'name': 'Bob', 'size': 'large', 'sku': '1234'}
 
-        r = resource.Resource(obj, fields)
+        r = resources.Resource(obj, fields)
         result = r.to_dict()
         self.assertDictEqual(result, {'name': 'Bob', 'size': 'large', 'sku': '1234'})
 
