@@ -26,7 +26,7 @@ Running Unit Tests
 
 Running Example App (not currently a full example)
 -----
-* cd to check out directory
+* `cd to check out directory`
 * `dev_appserver.py .`
 Open in browser or a REST application like PAW
 
