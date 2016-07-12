@@ -103,7 +103,7 @@ def edit_post(entity, data):
     if maybe_publish:
         entity.is_published = True  # Regardless of it it was already true
 
-        if data['published_date']:
+        if data.get('published_date'):
             entity.published_date = data['published_date'].replace(tzinfo=None)
         elif entity.published_date is None:
             entity.published_date = datetime.datetime.now()  # TODO: Convert to CST
@@ -113,14 +113,12 @@ def edit_post(entity, data):
         # Let's mark as not published - but preserve original published date for archives
         entity.is_published = False
 
-    entity.slug = data['slug']
-    entity.title = data['title']
-    entity.slug = data['slug']
-    entity.title = data['title']
-    entity.summary = data['summary']
-    entity.content = data['content']
-    entity.author_resource_id = data.get('author_resource_id')
-    entity.category_resource_id = data.get('category_resource_id')
+    entity.slug = data.get('slug')
+    entity.title = data.get('title')
+    entity.slug = data.get('slug')
+    entity.title = data.get('title')
+    entity.summary = data.get('summary')
+    entity.content = data.get('content')
 
     entity.put()
 
