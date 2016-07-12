@@ -1,3 +1,4 @@
+# Note: This just needs to be present for GAE Testbed unit tests
 module: rest-core
 runtime: python27
 api_version: 1
@@ -7,38 +8,6 @@ libraries:
 - name: webapp2
   version: latest
 
-skip_files: |
-   ^(.*/)?(
-   (app\.yaml)|
-   (app\.yml)|
-   (index\.yaml)|
-   (index\.yml)|
-   (#.*#)|
-   (.*~)|
-   (.*\.py[co])|
-   (.git/.*)|
-   (.gitignore)|
-   (.DS_Store)|
-
-   (^external/nose/.*)|
-   (^external/pip/.*)|
-   (^'external/easy_install\.*)|
-   (^external/mock\.*)|
-   (^external/nose_exclude.*)|
-   (^external/nosegae.*)|
-   (^external/rednose.*)|
-   (^external/yanc/.*)|
-   (^external/setuptools/.*)|
-   (^external/rsa/.*)|
-   )$
-
-builtins:
-  - remote_api: on
-
-automatic_scaling:
-  min_idle_instances: 1
-  max_pending_latency: 10s
-
 handlers:
 - url: .*
-  script: example.app
+  script: doesnotexist.app

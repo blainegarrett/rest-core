@@ -1,4 +1,6 @@
-# Rest Controller Base
+"""
+Rest Controller Base
+"""
 
 import webapp2
 import json

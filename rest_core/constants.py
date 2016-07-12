@@ -1,4 +1,6 @@
+# Constants and defaults
 
+# TODO: These are specific to mplsart dev obviously - in a real world app import these from proj
 API_DEFAULT_ORIGIN = 'http://mplsart.com'
 API_WHITELIST_DOMAINS = ['http://mplsart.com',
                          'http://www.mplsart.com',
