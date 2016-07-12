@@ -36,6 +36,11 @@ def handle_404(request, response, exception):
     serve_response(response, 404, None, messages=[err])
 
 
-routes = []
+routes = [
+    (r'/posts', 'example.handlers.PostsApiHandler'),
+    (r'/posts/([a-zA-Z0-9-_]+)', 'example.handlers.PostDetailApiHandler'),
+]
+
+
 app = webapp2.WSGIApplication(routes, debug=True)
 app.error_handlers[404] = handle_404
