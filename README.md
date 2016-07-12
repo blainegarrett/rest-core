@@ -11,8 +11,8 @@ Have your route handlers extend `rest_core.RestHandlerBase`. Define your resourc
 General Best Practices
 -----
 In general use routes like:
-* /posts  - Collection of resources, plural with no trailing slash. POST creates new resource, GET fetches resources with optional filters. (No PUT nor DELETE)
-* /posts/<resource_id> - A single resource. GET fetches single resource, PUT edits resource, DELETE removes resource. (Typically no PUT)
+* `/posts`  - Collection of resources, plural with no trailing slash. POST creates new resource, GET fetches resources with optional filters. (No PUT nor DELETE)
+* `/posts/<resource_id>` - A single resource. GET fetches single resource, PUT edits resource, DELETE removes resource. (Typically no PUT)
 
 
 Initial Development Setup
