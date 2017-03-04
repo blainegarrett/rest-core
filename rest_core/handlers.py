@@ -10,7 +10,6 @@ import os
 import logging
 
 # from urlparse import urlparse
-from google.appengine.api import users
 
 from constants import API_DEFAULT_ORIGIN
 import errors
@@ -76,8 +75,7 @@ class RestHandlerBase(webapp2.RequestHandler):
             self.cleaned_params = {}
 
             # Do basic access checks
-            cur_user = users.get_current_user()  # Eventually put this on the request
-            if not (self.is_same_origin() or cur_user):
+            if not self.is_same_origin():
                 raise errors.RestError('Invalid referrer: %s' % self.request.referer)
 
             # Process Request Payload
@@ -87,6 +85,7 @@ class RestHandlerBase(webapp2.RequestHandler):
                 if 'application/json' in self.request.headers['Content-Type']:
                     self.data = json.loads(self.request.body)
                 elif 'multipart/form-data' in self.request.headers['Content-Type']:
+                    # TODO: We prob don't want this? it's for uploading files...
                     self.data = self.request.POST.mixed()
                     logging.error(self.data)
 
@@ -94,61 +93,44 @@ class RestHandlerBase(webapp2.RequestHandler):
             self.params = self.request.GET.mixed()
             self.validate_params()
 
+            # Validate incoming payload
+            if self.request.method in ('POST', 'PUT'):
+                self.validate_payload()
+
             # Attempt to run handler
             super(RestHandlerBase, self).dispatch()
 
-        except errors.MethodNotAllowed, e:
-            self.serve_error(e, status=405)
+            """
+            except DoesNotExistException, e:
+                self.serve_404(unicode(e))
+            except PermissionException, e:
+                self.serve_error(e, status=403)
+            except errors.MethodNotAllowed, e:
+                self.serve_error(e, status=405)
+            except HTTPMethodNotAllowed, e:
+                self.serve_error(e, status=405)
+            """
         except Exception, e:
-            self.serve_error(e)
+            self.serve_error(e)  # status=500 for clarity?
 
-    def put(self, *args, **kwargs):
+    def options(self, *args, **kwargs):
         """
+        Called for ajax calls for most browsers in X-Origin
         """
-
-        # Validate incoming payload
-        self.validate_payload()
-
-        if not hasattr(self, '_put'):
-            raise errors.MethodNotAllowed('Method Not Allowed.')
-        self._put(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        """
-        """
-
-        if not hasattr(self, '_delete'):
-            raise errors.MethodNotAllowed('Method Not Allowed.')
-        self._delete(*args, **kwargs)
-
-    def post(self, *args, **kwargs):
-        """
-        Typically used to create a new resource
-        """
-
-        # Validate incoming payload
-        self.validate_payload()
-
-        if not hasattr(self, '_post'):
-            raise errors.MethodNotAllowed('Method Not Allowed.')
-        self._post(*args, **kwargs)
-
-    def get(self, *args, **kwargs):
-        """
-        """
-
-        if not hasattr(self, '_get'):
-            raise errors.MethodNotAllowed('Method Not Allowed.')
-        self._get(*args, **kwargs)
+        self.serve_response(200, [])
 
     def serve_success(self, result, extra_fields={}):
+        """Serve up a 200 response"""
         self.serve_response(200, result, extra_fields=extra_fields)
 
-    def serve_404(self, msg='Page Not Found'):
+    def serve_404(self, msg='Endpoint Not Found'):
+        """Serve up a 404 Response """
         self.serve_response(404, [], messages=msg)
 
     def serve_error(self, exception, status=500):
+        """Serve up a Exception Response"""
         # TODO: Pass in exception stack
+        # TODO: Figure out how to communicate  retryable exceptions, etc
 
         exc_type, exc_value, exc_traceback = sys.exc_info()
         formatted_lines = traceback.format_exc().splitlines()
@@ -157,9 +139,9 @@ class RestHandlerBase(webapp2.RequestHandler):
         logging.exception(exception)
 
     def serve_response(self, status, result, messages=None, extra_fields={}):
-        """
-        Serve the response
-        """
+        """Serve the response"""
+
+        allow_header_values = "Authorization, Origin, X-Requested-With, Content-Type, Accept"
 
         if (not isinstance(messages, list)):
             messages = [messages]
@@ -182,5 +164,11 @@ class RestHandlerBase(webapp2.RequestHandler):
         self.response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE'
         self.response.headers['Access-Control-Allow-Credentials'] = 'true'
         self.response.headers['Content-Type'] = 'application/json'
+        self.response.headers['Access-Control-Allow-Headers'] = allow_header_values
 
-        self.response.write(json.dumps(payload))
+        if (self.request.GET.get('pretty')):
+            output_json = json.dumps(payload, sort_keys=True, indent=4, separators=(',', ': '))
+        else:
+            output_json = json.dumps(payload, sort_keys=True)
+
+        self.response.write(output_json)

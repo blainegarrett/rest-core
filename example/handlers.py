@@ -74,7 +74,7 @@ class PostsApiHandler(RestHandlerBase):
         self.serve_success(Resource(post, BLOG_POST_REST_RULES).to_dict())
         return
 
-    def _get(self):
+    def get(self):
         """
         Get a collection of Blog Posts or query for specific criteria
         """
@@ -111,7 +111,7 @@ class PostsApiHandler(RestHandlerBase):
 
         self.serve_success(results, {'cursor': cursor, 'more': more})
 
-    def _post(self):
+    def post(self):
         """
         Create a Post
         """
@@ -128,7 +128,7 @@ class PostDetailApiHandler(RestHandlerBase):
     def get_rules(self):
         return BLOG_POST_REST_RULES
 
-    def _get(self, resource_id):
+    def get(self, resource_id):
         """
         Get a post by resource id
         Note: To get a post by slug id, hit collection endpoint (/?get_by_slug=slug)
@@ -137,7 +137,7 @@ class PostDetailApiHandler(RestHandlerBase):
         post = posts_api.get_post_by_resource_id(resource_id)
         self.serve_success(Resource(post, BLOG_POST_REST_RULES).to_dict())
 
-    def _put(self, resource_id):
+    def put(self, resource_id):
         """
         Edit a Post given by resource_id
         """

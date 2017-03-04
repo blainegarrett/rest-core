@@ -88,6 +88,27 @@ class ResourceTestCaseFromDict(RestBaseCase):
         r = resources.Resource(None, fields)
         self.assertRaises(resources.RequiredFieldError, r.from_dict, data)
 
+    def test_verbose_only_fields(self):
+        """
+        Test to ensure fields that are output only error if they are in the input.
+
+        TODO: This should throw a OutputOnlyError - see from_dict
+        """
+
+        fields = [
+            resources.RestField('name', required=True),
+            resources.RestField('size', required=False),
+            resources.RestField('thing', verbose_only=True),
+        ]
+
+        # Hydrate the resource
+        data = {'size': 'large', 'thing': 'Yep', 'name': 'TestName'}
+        r = resources.Resource(data, fields)
+
+        # Check output
+        self.assertFalse('thing' in r.to_dict())
+        self.assertTrue('thing' in r.to_dict(verbose=True))
+
     def test_output_only_fields(self):
         """
         Test to ensure fields that are output only error if they are in the input.
@@ -111,10 +132,8 @@ class ResourceTestCaseToDict(RestBaseCase):
     Tests surrounding converting a resource to dict to output for json, etc
     """
 
-    def test_base(self):
-        """
-        """
-
+    def test_extra_data_skipped(self):
+        # Test to ensure that if a resource is given an unknown data prop, we skip it
         obj = {'name': 'Bob', 'size': 'large', 'color': 'orange'}
         fields = [
             resources.RestField('name', required=True),
@@ -125,9 +144,68 @@ class ResourceTestCaseToDict(RestBaseCase):
         result = r.to_dict()
 
         # This ensures that other props on the "obj" do not get output to dict
+
+        # Test with verbose=False
         self.assertDictEqual(result, {'name': 'Bob',
                                       'size': 'large',
-                                      'resource_type': 'NonDefinedClass'})
+                                      'resource_type': 'NonDefinedClass',
+                                      '_meta': {'is_verbose': True,
+                                                'resource_type': 'NonDefinedClass'}})
+
+    def test_no_verbose_fields(self):
+        # Test to ensure that we properly set output meta info
+
+        obj = {'name': 'Bob', 'size': 'large'}
+        fields = [
+            resources.RestField('name', required=True),
+            resources.RestField('size', required=False),
+        ]
+
+        r = resources.Resource(obj, fields)
+        result = r.to_dict()
+
+        # This ensures that other props on the "obj" do not get output to dict
+
+        # Test with verbose=False
+        self.assertDictEqual(result, {'name': 'Bob',
+                                      'size': 'large',
+                                      'resource_type': 'NonDefinedClass',
+                                      '_meta': {'is_verbose': True,
+                                                'resource_type': 'NonDefinedClass'}})
+
+        # Test with verbose=True
+        result = r.to_dict(verbose=True)
+        self.assertDictEqual(result, {'name': 'Bob',
+                                      'size': 'large',
+                                      'resource_type': 'NonDefinedClass',
+                                      '_meta': {'is_verbose': True,
+                                                'resource_type': 'NonDefinedClass'}})
+
+    def test_with_verbose_fields(self):
+        # Test to ensure that we properly set output meta info when there are verbose fields
+
+        obj = {'name': 'Bob', 'size': 'large'}
+        fields = [
+            resources.RestField('name', required=True),
+            resources.RestField('size', required=False, verbose_only=True),
+        ]
+
+        r = resources.Resource(obj, fields)
+
+        # Test with verbose = True
+        result = r.to_dict(verbose=True)
+        self.assertDictEqual(result, {'name': 'Bob',
+                                      'size': 'large',
+                                      'resource_type': 'NonDefinedClass',
+                                      '_meta': {'is_verbose': True,
+                                                'resource_type': 'NonDefinedClass'}})
+
+        # Test with verbose = True
+        result = r.to_dict(verbose=False)
+        self.assertDictEqual(result, {'name': 'Bob',
+                                      'resource_type': 'NonDefinedClass',
+                                      '_meta': {'is_verbose': False,
+                                                'resource_type': 'NonDefinedClass'}})
 
 
 class ResourceFieldInitTests(RestBaseCase):

@@ -131,7 +131,7 @@ class Resource(object):
 
         return self.cleaned_data
 
-    def to_dict(self):
+    def to_dict(self, verbose=False):
         """
         Dumps a rest Resource to a dictionary of values
         """
@@ -142,10 +142,18 @@ class Resource(object):
         if not obj:
             return result
 
+        # Keep track of if we excluded anything because of verbose, etc
+        has_excluded_props = False
+
         for field in self.fields:
-            result[field.key] = field.from_resource(obj, field.key)
+            if not field.verbose_only or verbose:
+                result[field.key] = field.from_resource(obj, field.key)
+            else:
+                has_excluded_props = True
 
         result['resource_type'] = self.resource_type
+        result['_meta'] = {'is_verbose': not has_excluded_props,
+                           'resource_type': self.resource_type}
         return result
 
 
@@ -154,12 +162,13 @@ class RestField(object):
     Baseclass for a specific field for a Rest Resource.
     """
 
-    def __init__(self, prop, always=True, validator=None, output_only=False, input_only=False,
-                 required=False):
+    def __init__(self, prop, verbose_only=False, always=True, validator=None, output_only=False,
+                 input_only=False, required=False):
 
         self.key = None  # This is the dict key for Resource dict
 
         self.prop = prop
+        self.verbose_only = verbose_only
         self.always = always
 
         self.validator = validator

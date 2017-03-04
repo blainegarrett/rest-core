@@ -1,4 +1,4 @@
-from voluptuous import Schema
+import voluptuous
 from google.appengine.datastore.datastore_query import Cursor
 import datetime
 from pytz import timezone
@@ -12,8 +12,10 @@ class ResourceParams(object):
         """
         :param input_params dict:
         """
+        self.param_schema['pretty'] = voluptuous.Coerce(bool)
+        self.param_schema['verbose'] = voluptuous.Coerce(bool)
 
-        schema = Schema(self.param_schema)
+        schema = voluptuous.Schema(self.param_schema)
         validated_params = schema(input_params)
 
         return validated_params

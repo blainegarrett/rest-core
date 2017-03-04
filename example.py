@@ -8,8 +8,6 @@ import json
 # Bootstrap the external libs
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'external'))
 
-from rest_core import handlers
-
 
 def serve_response(response, status, result, messages=None):
     """
