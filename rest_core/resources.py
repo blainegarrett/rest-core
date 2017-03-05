@@ -7,6 +7,7 @@ Note: This is designed to work similar django Forms - try to keep it that way
 import voluptuous
 from google.appengine.ext import ndb
 import logging
+from models import Model
 from params import coerce_to_datetime, coerce_from_datetime
 from utils import get_resource_id_from_key
 from utils import get_key_from_resource_id
@@ -75,7 +76,9 @@ class Resource(object):
 
         self.resource_type = 'NonDefinedClass'
 
-        if (obj and isinstance(obj, ndb.Model)):
+        if (obj and isinstance(obj, Model)):
+            self.resource_type = obj.get_kind()
+        elif (obj and isinstance(obj, ndb.Model)):
             self.resource_type = obj.key.kind()
 
         if not (isinstance(fields, list)):
