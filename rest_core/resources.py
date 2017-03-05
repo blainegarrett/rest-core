@@ -251,8 +251,10 @@ class ResourceUrlField(RestField):
         """
         Outout a field to dic value
         """
-
-        return self.url_template % get_resource_id_from_key(obj.key)
+        if (obj and isinstance(obj, Model)):
+            return self.url_template % obj.id
+        else:
+            return self.url_template % get_resource_id_from_key(obj.key)
 
 
 class ResourceIdField(RestField):
@@ -270,6 +272,11 @@ class ResourceIdField(RestField):
         Outout a field to dic value
         """
 
+        # Native Model
+        if (obj and isinstance(obj, Model)):
+            return obj.id
+
+        # NDB Model
         try:
             resource_id = get_resource_id_from_key(obj.key)
         except:
