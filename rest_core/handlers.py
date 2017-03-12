@@ -100,16 +100,12 @@ class RestHandlerBase(webapp2.RequestHandler):
             # Attempt to run handler
             super(RestHandlerBase, self).dispatch()
 
-            """
-            except DoesNotExistException, e:
-                self.serve_404(unicode(e))
-            except PermissionException, e:
-                self.serve_error(e, status=403)
-            except errors.MethodNotAllowed, e:
-                self.serve_error(e, status=405)
-            except HTTPMethodNotAllowed, e:
-                self.serve_error(e, status=405)
-            """
+        except errors.DoesNotExistException, e:
+            self.serve_404(unicode(e))
+        except errors.PermissionException, e:
+            self.serve_error(e, status=403)
+        except errors.MethodNotAllowed, e:
+            self.serve_error(e, status=405)
         except Exception, e:
             self.serve_error(e)  # status=500 for clarity?
 

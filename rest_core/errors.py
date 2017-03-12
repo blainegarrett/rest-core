@@ -15,3 +15,17 @@ class MethodNotAllowed(RestError):
     """
 
     pass
+
+
+class DoesNotExistException(RestError):
+    """
+    404 Not Found
+    """
+    pass
+
+
+class PermissionException(RestError):
+    """
+    403 Permission Error
+    """
+    pass
