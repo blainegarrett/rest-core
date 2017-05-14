@@ -20,7 +20,7 @@ Initial Development Setup
 To develop this project, check out `git@github.com:blainegarrett/rest-core.git`
 * Install [virtualenvwrapper](http://virtualenvwrapper.readthedocs.io/en/latest/install.html)
 * `cd <path to git checkout>`
-* `mkvirtualenv rest-core`
+* `mkvirtualenv rest-core -a .`
 * Once complete be sure to run the following installation step
 
 Installation
