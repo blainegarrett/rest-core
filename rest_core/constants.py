@@ -1,13 +1,7 @@
 # Constants and defaults
 
-# TODO: These are specific to mplsart dev obviously - in a real world app import these from proj
-API_DEFAULT_ORIGIN = 'http://mplsart.com'
-API_WHITELIST_DOMAINS = ['http://mplsart.com',
-                         'http://www.mplsart.com',
-                         'http://www.digibodies.com',
-                         'http://digibodies.com',
-                         'http://192.168.1.143:8080']
+import rest_core_settings as settings
 
-API_WHITELIST_RULES = [r'http://.*\.arts-612\.appspot\.com',
-                       r'https://.*\-arts-612\.appspot\.com',
-                       r'http://localhost:.*']
+API_DEFAULT_ORIGIN = settings.REST_DEFAULT_ORIGIN
+API_WHITELIST_DOMAINS = settings.REST_WHITELIST_DOMAINS
+API_WHITELIST_RULES = settings.REST_WHITELIST_RULES

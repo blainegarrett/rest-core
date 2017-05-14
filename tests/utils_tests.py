@@ -73,16 +73,15 @@ class WhiteListTests(BaseCase):
     """
 
     def test_is_origin_in_whitelist(self):
-
         # Error Cases
         self.assertFalse(utils.is_origin_in_whitelist(None))
 
         # Direct Hit
         self.assertFalse(utils.is_origin_in_whitelist('http://google.com'))
-        self.assertTrue(utils.is_origin_in_whitelist('http://www.mplsart.com'))
+        self.assertTrue(utils.is_origin_in_whitelist('http://www.example.com'))
 
         # Rules
-        self.assertTrue(utils.is_origin_in_whitelist('http://someversion.arts-612.appspot.com'))
+        self.assertTrue(utils.is_origin_in_whitelist('http://someversion.example.appspot.com'))
         self.assertTrue(utils.is_origin_in_whitelist('http://localhost:9090'))
         self.assertFalse(utils.is_origin_in_whitelist('http://version.project.appspot.com'))
         self.assertFalse(utils.is_origin_in_whitelist('https://version-dcotx-project.appspot.com'))

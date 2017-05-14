@@ -1,5 +1,5 @@
 """
-Rest Controller Base
+Rest Controller Base Handlers
 """
 
 import webapp2
@@ -8,8 +8,6 @@ import traceback
 import sys
 import os
 import logging
-
-# from urlparse import urlparse
 
 from constants import API_DEFAULT_ORIGIN
 import errors
@@ -29,6 +27,8 @@ class RestHandlerBase(webapp2.RequestHandler):
         This is to support 'dumb' REST permissions to prevent attacking REST Services
         """
 
+        # TODO: REWORK THIS TO OPERATE ON SETTINGS
+
         # If local sdk, allow
         if os.environ['SERVER_SOFTWARE'].startswith('Development'):
             return True
@@ -43,7 +43,6 @@ class RestHandlerBase(webapp2.RequestHandler):
         """
         If you want query params, you must implement this
         """
-
         return {}
 
     def validate_params(self):

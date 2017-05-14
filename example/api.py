@@ -10,8 +10,8 @@ TODO: Add doc strings and unit tests
 
 import datetime
 from rest_core.utils import get_key_from_resource_id
-from example.models import BlogPost
-from example.constants import QUERY_LIMIT
+from models import BlogPost
+from constants import QUERY_LIMIT
 
 
 def get_post_by_resource_id(resource_id):

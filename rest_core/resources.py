@@ -5,6 +5,7 @@ Note: This is designed to work similar django Forms - try to keep it that way
 """
 
 import voluptuous
+
 from google.appengine.ext import ndb
 import logging
 from models import Model
@@ -226,11 +227,11 @@ class RestField(object):
         value = data.get(self.key, 'not_present')
 
         # If it wasn't in the payload and it is required
-        if (value == 'not_present' and self.required):
+        if ((value == 'not_present') and self.required):
             raise RequiredFieldError('Field "%s" is a required input field.' % self.key)
 
         # If it was in the payload but undefined and it is required (note this is bool fase safe)
-        if value is None and self.required:
+        if (value is None or value == '') and self.required:
             raise RequiredFieldError('Field "%s" is a required input field.' % self.key)
 
         # Check if value is an input only prop

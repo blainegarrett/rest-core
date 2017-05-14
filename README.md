@@ -1,5 +1,5 @@
 # rest-core
-Simple custom RESTful Framework designed for webapp2 on Google Appengine
+Simple custom RESTful Framework designed for webapp2
 
 NOTE: This specific codebase is not currently in use and is not production grade. Use at your own risk. If you'd like me to continue developing it, let me know or make a pull request.
 
@@ -34,10 +34,12 @@ Running Unit Tests
 * `cd <path to git checkout>`
 * `make unit`
 
-Running Example App (not currently a full example)
+Running Example App
 -----
-* `cd to check out directory`
-* `dev_appserver.py .`
+Be sure to run `make install` in the root `rest-core` directory
+
+
+* `dev_appserver.py example`
 * Open in browser or a REST application like PAW.
 * Collection endpoint is located at `/posts`
 
@@ -45,7 +47,6 @@ Running Example App (not currently a full example)
 TODO
 -----
 * Add unit tests for handler code
-* Remove various mplsart.com specific bits for whitelisting, etc
 * Flesh out example
 * Release a 0.1.0 version
 * Add code coverage
