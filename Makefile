@@ -24,3 +24,6 @@ else
 	@echo "Running only integration tests in $(filter-out $@,$(MAKECMDGOALS))"
 endif
 	nosetests -sv --with-gae --gae-application=rest_core --with-yanc $(filter-out $@,$(MAKECMDGOALS))
+
+run:
+	dev_appserver.py example --port=8080

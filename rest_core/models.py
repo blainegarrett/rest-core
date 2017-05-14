@@ -1,11 +1,11 @@
 
 # Base model class
-# from google.appengine.ext import ndb
+from google.appengine.ext import ndb
 
 # TODO: Eventually re-work this so it doesn't extend ndb.Model
 
 
-class Model():  # ndb.Model):
+class Model(ndb.Model):
     id = None
 
     def get_kind(self):
