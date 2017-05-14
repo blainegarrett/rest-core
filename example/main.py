@@ -6,14 +6,10 @@ import webapp2
 import json
 
 # Bootstrap the external libs
-sys.path.insert(0, '/Users/blainegarrett/sites/rest-core')
-sys.path.insert(0, '/Users/blainegarrett/sites/rest-core/external')
-
-#raise Exception(sys.path)
-
-import voluptuous
-from rest_core import handlers
-
+EXAMPLE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(EXAMPLE_DIR, '../external'))
+sys.path.insert(0, os.path.join(EXAMPLE_DIR, '../rest_core'))
+sys.path.insert(0, EXAMPLE_DIR)
 
 def serve_response(response, status, result, messages=None):
     """
