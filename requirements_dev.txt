@@ -4,6 +4,7 @@ git+https://github.com/ze-phyr-us/linkenv.git
 mock
 nose
 nose-exclude
+unittest2
 rednose
 coverage
 git+https://github.com/Trii/NoseGAE.git
