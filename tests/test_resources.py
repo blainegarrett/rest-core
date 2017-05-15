@@ -148,7 +148,6 @@ class ResourceTestCaseToDict(RestBaseCase):
         # Test with verbose=False
         self.assertDictEqual(result, {'name': 'Bob',
                                       'size': 'large',
-                                      'resource_type': 'NonDefinedClass',
                                       '_meta': {'is_verbose': True,
                                                 'resource_type': 'NonDefinedClass'}})
 
@@ -169,7 +168,6 @@ class ResourceTestCaseToDict(RestBaseCase):
         # Test with verbose=False
         self.assertDictEqual(result, {'name': 'Bob',
                                       'size': 'large',
-                                      'resource_type': 'NonDefinedClass',
                                       '_meta': {'is_verbose': True,
                                                 'resource_type': 'NonDefinedClass'}})
 
@@ -177,7 +175,6 @@ class ResourceTestCaseToDict(RestBaseCase):
         result = r.to_dict(verbose=True)
         self.assertDictEqual(result, {'name': 'Bob',
                                       'size': 'large',
-                                      'resource_type': 'NonDefinedClass',
                                       '_meta': {'is_verbose': True,
                                                 'resource_type': 'NonDefinedClass'}})
 
@@ -196,14 +193,12 @@ class ResourceTestCaseToDict(RestBaseCase):
         result = r.to_dict(verbose=True)
         self.assertDictEqual(result, {'name': 'Bob',
                                       'size': 'large',
-                                      'resource_type': 'NonDefinedClass',
                                       '_meta': {'is_verbose': True,
                                                 'resource_type': 'NonDefinedClass'}})
 
         # Test with verbose = True
         result = r.to_dict(verbose=False)
         self.assertDictEqual(result, {'name': 'Bob',
-                                      'resource_type': 'NonDefinedClass',
                                       '_meta': {'is_verbose': False,
                                                 'resource_type': 'NonDefinedClass'}})
 

@@ -155,7 +155,6 @@ class Resource(object):
             else:
                 has_excluded_props = True
 
-        result['resource_type'] = self.resource_type
         result['_meta'] = {'is_verbose': not has_excluded_props,
                            'resource_type': self.resource_type}
         return result
