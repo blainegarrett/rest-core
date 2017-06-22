@@ -279,6 +279,7 @@ class RestIntegrationTests(RestBaseCase):
 
     def simple_test(self):
         """
+        TODO: This probably doesn't need to be an integration test
         """
 
         fields = [
@@ -286,14 +287,17 @@ class RestIntegrationTests(RestBaseCase):
             resources.RestField('name', required=True),
             resources.RestField('size')]
 
-        # Create A Resource from an object - Base Test
+        # Create a Resource from an object - Base Test
         obj = {'name': 'Bob', 'size': 'large', 'sku': '1234'}
 
         r = resources.Resource(obj, fields)
         result = r.to_dict()
-        self.assertDictEqual(result, {'name': 'Bob', 'size': 'large', 'sku': '1234'})
 
-        # Create A Resource from a input dict
+        self.assertDictEqual(result, {'sku': '1234', 'name': 'Bob', 'size': 'large',
+                                      '_meta': {'is_verbose': True,
+                                                'resource_type': 'NonDefinedClass'}, })
+        # Create a Resource from a input dict
         input_data = {'name': 'Bob', 'size': 'large'}
         result = r.from_dict(input_data)
+
         self.assertDictEqual(result, {'name': 'Bob', 'size': 'large'})

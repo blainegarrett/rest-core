@@ -1,5 +1,4 @@
-# Any packages here will be deployed along to the appspot
-# Packages in requirements_dev.txt will be installed locally only
+# These requirements are installed to ./app/external and deployed to appspot for example app
 
 pytz
 voluptuous

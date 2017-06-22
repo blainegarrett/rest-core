@@ -4,10 +4,9 @@ clean:
 	find . -name '*~' -exec rm -f {} +
 
 install:
-	pip install -r requirements_dev.txt
-	linkenv $(PYTHON_SITE_PACKAGES_PATH) ./external
-	@echo "Yay! Everything installed."
-
+	pip install -Ur requirements_dev.txt
+	pip install -Ur requirements.txt -t ./external
+	@echo "Dependencies for rest_core installed."
 
 unit:
 ifeq ($(filter-out $@,$(MAKECMDGOALS)), "")

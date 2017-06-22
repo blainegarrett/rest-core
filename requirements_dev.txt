@@ -1,6 +1,5 @@
 # Packages here will be installed locally only and not deployed to the appspot
 
-git+https://github.com/ze-phyr-us/linkenv.git
 mock
 nose
 nose-exclude
@@ -9,4 +8,3 @@ rednose
 coverage
 git+https://github.com/Trii/NoseGAE.git
 yanc
--r requirements.txt

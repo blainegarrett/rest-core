@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='rest-core',
+    name='rest_core',
     version='0.0.1',
     description='Simple Rest framework',
-    url='https://github.com/blainegarrett/rest-core',
+    url='https://github.com/blainegarrett/rest_core',
     author='Blaine Garrett',
     author_email='blaine@blainegarrett.com',
     license='MIT',

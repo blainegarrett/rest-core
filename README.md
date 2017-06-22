@@ -1,4 +1,4 @@
-# rest-core
+# rest_core
 Simple custom RESTful Framework designed for webapp2
 
 NOTE: This specific codebase is not currently in use and is not production grade. Use at your own risk. If you'd like me to continue developing it, let me know or make a pull request.
@@ -17,10 +17,10 @@ In general use routes like:
 
 Initial Development Setup
 -----
-To develop this project, check out `git@github.com:blainegarrett/rest-core.git`
+To develop this project, check out `git@github.com:blainegarrett/rest_core.git`
 * Install [virtualenvwrapper](http://virtualenvwrapper.readthedocs.io/en/latest/install.html)
 * `cd <path to git checkout>`
-* `mkvirtualenv rest-core -a .`
+* `mkvirtualenv rest_core -a .`
 * Once complete be sure to run the following installation step
 
 Installation
@@ -36,7 +36,7 @@ Running Unit Tests
 
 Running Example App
 -----
-Be sure to run `make install` in the root `rest-core` directory
+Be sure to run `make install` in the root `rest_core` directory
 
 
 * `dev_appserver.py example`

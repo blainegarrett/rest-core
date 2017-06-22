@@ -10,9 +10,11 @@ from google.appengine.ext import testbed
 
 # Bootstrap the external libs
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(TEST_DIR, '../external'))
-sys.path.insert(0, os.path.join(TEST_DIR, '../rest_core'))
-sys.path.insert(0, TEST_DIR)
+
+sys.path.insert(0, os.path.abspath(os.path.join(TEST_DIR, '../external')))  # dependencies
+sys.path.insert(0, os.path.abspath(os.path.join(TEST_DIR, '../rest_core')))  # core code to test
+sys.path.insert(0, os.path.abspath(os.path.join(TEST_DIR, '../')))  # project root to import tests
+sys.path.insert(0, TEST_DIR)  # test support for rest_core_settings etc
 
 
 class BaseCase(unittest.TestCase):
