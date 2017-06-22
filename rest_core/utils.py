@@ -7,6 +7,8 @@ import base64
 from google.appengine.ext import ndb
 from constants import API_WHITELIST_DOMAINS, API_WHITELIST_RULES
 
+import rest_core_settings as settings
+
 
 SEPARATOR = chr(30)
 INTPREFIX = chr(31)
@@ -116,3 +118,63 @@ def create_request_key(prefix, params_dict):
         cache_stamp = "%s_%s" % (prefix, cache_stamp)
 
     return cache_stamp
+
+
+def path_to_reference(path):
+    """
+    Convert an object path reference to a reference.
+    # Note: This is glorked from furious
+        https://github.com/Workiva/furious/blob/master/furious/job_utils.py
+    """
+    path = str(path)
+
+    if '.' not in path:
+        try:
+            return globals()["__builtins__"][path]
+        except KeyError:
+            try:
+                return getattr(globals()["__builtins__"], path)
+            except AttributeError:
+                pass
+
+        try:
+            return globals()[path]
+        except KeyError:
+            pass
+
+        raise Exception(
+            'Unable to find function "%s".' % (path,))
+
+    module_path, function_name = path.rsplit('.', 1)
+
+    try:
+        module = __import__(name=module_path,
+                            fromlist=[function_name])
+    except ImportError:
+        module_path, class_name = module_path.rsplit('.', 1)
+
+        module = __import__(name=module_path, fromlist=[class_name])
+        module = getattr(module, class_name)
+
+    try:
+        return getattr(module, function_name)
+    except AttributeError:
+        raise Exception(
+            'Unable to find function "%s".' % (path,))
+
+
+def apply_middleware(request, func_name):
+    """
+    Given a callback hook funcname,
+    #TODO: This should cache the imports
+    """
+
+    if not (hasattr(settings, 'REST_MIDDLEWARE_CLASSES') and settings.REST_MIDDLEWARE_CLASSES):
+        return
+
+    for middleware_path in settings.REST_MIDDLEWARE_CLASSES:
+        klass = path_to_reference(middleware_path)
+        if hasattr(klass, func_name):
+            getattr(klass, func_name)(request)
+
+    return True

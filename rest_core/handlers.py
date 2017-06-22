@@ -78,6 +78,7 @@ class RestHandlerBase(webapp2.RequestHandler):
                 raise errors.RestError('Invalid referrer: %s' % self.request.referer)
 
             # Process Request Payload
+            rest_utils.apply_middleware(self.request, 'process_request')
 
             # Convert: body into native format
             if len(self.request.body) > 0:
@@ -98,6 +99,9 @@ class RestHandlerBase(webapp2.RequestHandler):
 
             # Attempt to run handler
             super(RestHandlerBase, self).dispatch()
+
+            # Process Response Payload
+            rest_utils.apply_middleware(self.request, 'process_response')
 
         except errors.DoesNotExistException, e:
             self.serve_404(unicode(e))
