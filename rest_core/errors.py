@@ -29,3 +29,10 @@ class PermissionException(RestError):
     403 Permission Error
     """
     pass
+
+
+class AuthenticationException(RestError):
+    """
+    401 Unauthorized/Authentication Error
+    """
+    pass

@@ -105,6 +105,8 @@ class RestHandlerBase(webapp2.RequestHandler):
 
         except errors.DoesNotExistException, e:
             self.serve_404(unicode(e))
+        except errors.AuthenticationException, e:
+            self.serve_error(e, status=401)
         except errors.PermissionException, e:
             self.serve_error(e, status=403)
         except errors.MethodNotAllowed, e:
