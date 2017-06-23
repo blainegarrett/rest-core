@@ -51,12 +51,8 @@ Running Unit Tests
 
 Running Example App
 -----
-Be sure to run `make install` in the root `rest_core` directory
+An example application is located at [https://github.com/blainegarrett/rest_core_demo](https://github.com/blainegarrett/rest_core_demo)
 
-
-* `dev_appserver.py example`
-* Open in browser or a REST application like PAW.
-* Collection endpoint is located at `/posts`
 
 
 TODO
@@ -69,5 +65,4 @@ TODO
 * Add support for exception middleware
 * Support debug mode for exception bubbling
 * Wrap voluptuous
-* Remove dependencies of GAE from example app - move to separate repo
 * Support for caching
