@@ -3,16 +3,16 @@ Rest Controller Base Handlers
 """
 
 import webapp2
+import webob
 import json
 import traceback
 import sys
-import os
 import logging
 from core import exceptions as core_exceptions
 from constants import API_DEFAULT_ORIGIN
-import errors
 from resources import Resource
 from params import ResourceParams
+import exc as rest_exceptions
 import utils as rest_utils
 
 
@@ -20,24 +20,6 @@ class RestHandlerBase(webapp2.RequestHandler):
     """
     Base Class for All Rest Endpoints
     """
-
-    def is_same_origin(self):
-        """
-        Helper Method to determine if referrer is the same as the host
-        This is to support 'dumb' REST permissions to prevent attacking REST Services
-        """
-
-        # TODO: REWORK THIS TO OPERATE ON SETTINGS
-
-        # If local sdk, allow
-        if os.environ['SERVER_SOFTWARE'].startswith('Development'):
-            return True
-
-        # TODO: Check whitelist as part of this instead of referer
-        # if not self.request.referer:
-        #     return False
-        # return urlparse(self.request.referer)[1] == self.request.host
-        return True
 
     def get_param_schema(self):
         """
@@ -73,10 +55,6 @@ class RestHandlerBase(webapp2.RequestHandler):
             self.params = {}
             self.cleaned_params = {}
 
-            # Do basic access checks
-            if not self.is_same_origin():
-                raise errors.RestError('Invalid referrer: %s' % self.request.referer)
-
             # Process Request Payload
             rest_utils.apply_middleware(self.request, 'process_request')
 
@@ -103,13 +81,16 @@ class RestHandlerBase(webapp2.RequestHandler):
             # Process Response Payload
             rest_utils.apply_middleware(self.request, 'process_response')
 
-        except (errors.DoesNotExistException, core_exceptions.DoesNotExistException), e:
+        except (rest_exceptions.DoesNotExistException,
+                core_exceptions.DoesNotExistException), e:
             self.serve_404(unicode(e))
-        except (errors.AuthenticationException, core_exceptions.AuthenticationException), e:
+        except (rest_exceptions.AuthenticationException,
+                core_exceptions.AuthenticationException), e:
             self.serve_error(e, status=401)
-        except (errors.PermissionException, core_exceptions.PermissionException), e:
+        except (rest_exceptions.PermissionException,
+                core_exceptions.PermissionException), e:
             self.serve_error(e, status=403)
-        except errors.MethodNotAllowed, e:
+        except (webob.exc.HTTPMethodNotAllowed), e:
             self.serve_error(e, status=405)
         except Exception, e:
             self.serve_error(e)  # status=500 for clarity?
@@ -136,7 +117,7 @@ class RestHandlerBase(webapp2.RequestHandler):
         exc_type, exc_value, exc_traceback = sys.exc_info()
         formatted_lines = traceback.format_exc().splitlines()
 
-        self.serve_response(status, formatted_lines, messages=[str(exception)])
+        self.serve_response(status, formatted_lines, messages=[unicode(exception)])
         logging.exception(exception)
 
     def serve_response(self, status, result, messages=None, extra_fields={}):

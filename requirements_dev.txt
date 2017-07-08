@@ -8,3 +8,4 @@ rednose
 coverage
 git+https://github.com/Trii/NoseGAE.git
 yanc
+webob
