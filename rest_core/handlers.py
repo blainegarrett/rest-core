@@ -8,7 +8,7 @@ import traceback
 import sys
 import os
 import logging
-
+from core import exceptions as core_exceptions
 from constants import API_DEFAULT_ORIGIN
 import errors
 from resources import Resource
@@ -103,11 +103,11 @@ class RestHandlerBase(webapp2.RequestHandler):
             # Process Response Payload
             rest_utils.apply_middleware(self.request, 'process_response')
 
-        except errors.DoesNotExistException, e:
+        except (errors.DoesNotExistException, core_exceptions.DoesNotExistException), e:
             self.serve_404(unicode(e))
-        except errors.AuthenticationException, e:
+        except (errors.AuthenticationException, core_exceptions.AuthenticationException), e:
             self.serve_error(e, status=401)
-        except errors.PermissionException, e:
+        except (errors.PermissionException, core_exceptions.PermissionException), e:
             self.serve_error(e, status=403)
         except errors.MethodNotAllowed, e:
             self.serve_error(e, status=405)
