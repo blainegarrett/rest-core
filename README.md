@@ -29,7 +29,7 @@ To develop (or debug) a checkout rest_core while installed as a pip dependency i
 * `pip install -e /absolute/path/to/your/checkout/of/rest_core`
 * `pip freeze` // ensure rest_core is listed - it may show as github url, `-e` at the beginning is important
 
-Note: Due to a pip bug, you cannot used --editable and --target in the same call. As such, if you use a target, (such as with GAE vendoring), you'll need to symlink. 
+Note: Due to a pip bug, you cannot used --editable and --target in the same call. As such, if you use a target, (such as with GAE vendoring), you'll need to symlink.
 
 Note: If using Google Appengine + Vendoring, you additionally need to symlink the editable package into your vendor location. This is due to GAE not including `site-packages/easy-install.pth` in the PYTHON_PATH and thus it needs to be symlink'd to something on the path.
 * `ln -s /absolute/path/to/your/checkout/of/rest_core/rest_core /absolute/path/to/vendor/dependencies`
@@ -37,7 +37,7 @@ Note: If using Google Appengine + Vendoring, you additionally need to symlink th
 
 Initial Development Setup
 -----
-To develop this project, check out `git@github.com:blainegarrett/rest_core.git`
+To develop this project, check out `git@github.com:digibodies/rest_core.git`
 * Install [virtualenvwrapper](http://virtualenvwrapper.readthedocs.io/en/latest/install.html)
 * `cd <path to git checkout>`
 * `mkvirtualenv rest_core -a .`
@@ -51,7 +51,7 @@ Running Unit Tests
 
 Running Example App
 -----
-An example application is located at [https://github.com/blainegarrett/rest_core_demo](https://github.com/blainegarrett/rest_core_demo)
+An example application is located at [https://github.com/digibodies/rest_core_demo](https://github.com/digibodies/rest_core_demo)
 
 
 
