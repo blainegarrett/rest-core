@@ -84,6 +84,8 @@ class RestHandlerBase(webapp2.RequestHandler):
         except (rest_exceptions.DoesNotExistException,
                 core_exceptions.DoesNotExistException), e:
             self.serve_404(unicode(e))
+        except (rest_exceptions.BadRequestException), e:
+            self.serve_error(e, status=400)
         except (rest_exceptions.AuthenticationException,
                 core_exceptions.AuthenticationException), e:
             self.serve_error(e, status=401)
