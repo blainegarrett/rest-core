@@ -79,7 +79,7 @@ class RestHandlerBase(webapp2.RequestHandler):
             super(RestHandlerBase, self).dispatch()
 
             # Process Response Payload
-            rest_utils.apply_middleware(self.request, 'process_response')
+            rest_utils.apply_middleware(self.response, 'process_response')
 
         except (rest_exceptions.DoesNotExistException,
                 core_exceptions.DoesNotExistException), e:
