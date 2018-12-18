@@ -10,8 +10,6 @@ from google.appengine.ext import ndb
 import logging
 from models import Model
 from params import coerce_to_datetime, coerce_from_datetime
-from utils import get_resource_id_from_key
-from utils import get_key_from_resource_id
 
 NON_FIELD_ERRORS = '__all__'
 VALID_RESORCE_TYPES = (ndb.Model, dict)  # None: is also allowed
@@ -261,7 +259,7 @@ class ResourceUrlField(RestField):
         if (obj and isinstance(obj, Model)):
             return self.url_template % obj.id
         else:
-            return self.url_template % get_resource_id_from_key(obj.key)
+            return 'unknown object'
 
 
 class ResourceIdField(RestField):
@@ -282,15 +280,6 @@ class ResourceIdField(RestField):
         # Native Model
         if (obj and isinstance(obj, Model)):
             return obj.id
-
-        # NDB Model
-        try:
-            resource_id = get_resource_id_from_key(obj.key)
-        except:
-            logging.error('Attempting to get ResourceID for a non ndb Entity...')
-            logging.error(obj)
-            resource_id = None
-        return resource_id
 
 
 class ResourceField(RestField):
@@ -319,14 +308,9 @@ class ResourceField(RestField):
             resource_entity = getattr(obj, self.key, None)
         else:
             logging.error('Reference prop `%s` was not bulk dereferenced.' % self.key)
-            try:
-                resource_key = get_key_from_resource_id(resource_id)
-                resource_entity = resource_key.get()
-            except ValueError:
-                vars = (resource_id, self.key)
-                logging.error('Failed to convert resource id %s to a key for prop %s.' % vars)
-                logging.error(obj)
-                return None
+            logging.error('Failed to convert resource id %s to a key for prop %s.' % vars)
+            logging.error(obj)
+            return None
 
         return Resource(resource_entity, self.resource_rules).to_dict()
 
