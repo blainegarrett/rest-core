@@ -94,6 +94,8 @@ class RestHandlerBase(webapp2.RequestHandler):
             self.serve_error(e, status=403)
         except (webob.exc.HTTPMethodNotAllowed), e:
             self.serve_error(e, status=405)
+        except (core_exceptions.ConflictException), e:
+            self.serve_error(e, status=409)
         except Exception, e:
             self.serve_error(e)  # status=500 for clarity?
 
