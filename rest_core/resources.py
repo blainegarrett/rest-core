@@ -8,11 +8,11 @@ import voluptuous
 
 
 import logging
-from core.models import Model
+import core.models as core_models
 from params import coerce_to_datetime, coerce_from_datetime
 
 NON_FIELD_ERRORS = '__all__'
-VALID_RESORCE_TYPES = (Model, dict)  # None: is also allowed
+VALID_RESORCE_TYPES = (core_models.Model, dict)  # None: is also allowed
 
 
 class RestValueException(Exception):
@@ -61,7 +61,7 @@ class Resource(object):
     def __init__(self, obj, fields):
         """
         :param obj:
-            Instance of Model, dict or None when attempting to validate a resource payload
+            Instance of core_models.Model, dict or None when attempting to validate a resource payload
         """
 
         # Step 1: Make sure entities is a list
@@ -75,7 +75,7 @@ class Resource(object):
 
         self.resource_type = 'NonDefinedClass'
 
-        if (obj and isinstance(obj, Model)):
+        if (obj and isinstance(obj, core_models.Model)):
             self.resource_type = obj.get_kind()
 
         if not (isinstance(fields, list)):
@@ -175,7 +175,9 @@ class RestField(object):
         self.output_only = output_only
         self.required = required  # Required on input
 
-        if isinstance(self, (ResourceUrlField, ResourceIdField)):
+        if isinstance(self.prop, core_models.Property):
+            self.key = self.key or self.prop._name
+        elif isinstance(self, (ResourceUrlField, ResourceIdField)):
             self.key = self.prop
         elif isinstance(self.prop, basestring):
             self.key = self.prop
@@ -252,7 +254,7 @@ class ResourceUrlField(RestField):
         """
         Outout a field to dic value
         """
-        if (obj and isinstance(obj, Model)):
+        if (obj and isinstance(obj, core_models.Model)):
             return self.url_template % obj.id
         else:
             return 'unknown object'
@@ -274,7 +276,7 @@ class ResourceIdField(RestField):
         """
 
         # Native Model
-        if (obj and isinstance(obj, Model)):
+        if (obj and isinstance(obj, core_models.Model)):
             return obj.id
 
 
