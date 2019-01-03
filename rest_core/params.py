@@ -1,6 +1,6 @@
 import voluptuous
-from google.appengine.datastore.datastore_query import Cursor
 import datetime
+import logging
 from pytz import timezone
 
 
@@ -25,12 +25,8 @@ def coerce_to_cursor(val):
     """
     Validate that val is None or a db.Cursor
     """
-
-    if not val:
-        return None
-
-    cursor = Cursor(urlsafe=val)
-    return cursor
+    logging.error('Deprecation error: coerce_to_cursor is no longer supported')
+    return None
 
 
 def coerce_to_datetime(dtstr):
