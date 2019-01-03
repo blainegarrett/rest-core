@@ -61,7 +61,7 @@ class Resource(object):
     def __init__(self, obj, fields):
         """
         :param obj:
-            Instance of ndb.Model, dict or None when attempting to validate a resource payload
+            Instance of Model, dict or None when attempting to validate a resource payload
         """
 
         # Step 1: Make sure entities is a list
@@ -77,8 +77,6 @@ class Resource(object):
 
         if (obj and isinstance(obj, Model)):
             self.resource_type = obj.get_kind()
-        elif (obj and isinstance(obj, ndb.Model)):
-            self.resource_type = obj.key.kind()
 
         if not (isinstance(fields, list)):
             err = 'Resource requires list. Received %s, %s.'
@@ -177,9 +175,7 @@ class RestField(object):
         self.output_only = output_only
         self.required = required  # Required on input
 
-        if isinstance(self.prop, ndb.model.Property):
-            self.key = self.key or self.prop._name
-        elif isinstance(self, (ResourceUrlField, ResourceIdField)):
+        if isinstance(self, (ResourceUrlField, ResourceIdField)):
             self.key = self.prop
         elif isinstance(self.prop, basestring):
             self.key = self.prop
