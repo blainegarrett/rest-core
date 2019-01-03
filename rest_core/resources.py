@@ -6,13 +6,13 @@ Note: This is designed to work similar django Forms - try to keep it that way
 
 import voluptuous
 
-from google.appengine.ext import ndb
+
 import logging
-from models import Model
+from core.models import Model
 from params import coerce_to_datetime, coerce_from_datetime
 
 NON_FIELD_ERRORS = '__all__'
-VALID_RESORCE_TYPES = (ndb.Model, dict)  # None: is also allowed
+VALID_RESORCE_TYPES = (Model, dict)  # None: is also allowed
 
 
 class RestValueException(Exception):
