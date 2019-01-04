@@ -211,7 +211,14 @@ class RestField(object):
 
         if isinstance(obj, dict):
             return obj.get(field, None)
-        return getattr(obj, field, None)
+
+        try:
+            return getattr(obj, field, None)
+        except TypeError as e:
+            logging.error(obj)
+            logging.error(field)
+            logging.exception(e.message)
+            return None
 
     def to_resource(self, data):
         """

@@ -6,7 +6,7 @@ import unittest
 import os
 import sys
 
-from google.appengine.ext import testbed
+#from google.appengine.ext import testbed
 
 # Bootstrap the external libs
 TEST_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -24,14 +24,16 @@ class BaseCase(unittest.TestCase):
     is_unit = True
 
     def setUp(self):
-        self.testbed = testbed.Testbed()
-        self.testbed.activate()
+        pass
 
-        self.testbed.init_datastore_v3_stub()
-        self.testbed.init_taskqueue_stub()
-        self.testbed.init_memcache_stub()
-        self.testbed.init_search_stub()
+        #self.testbed = testbed.Testbed()
+        #self.testbed.activate()
+
+        #self.testbed.init_datastore_v3_stub()
+        #self.testbed.init_taskqueue_stub()
+        #self.testbed.init_memcache_stub()
+        #self.testbed.init_search_stub()
 
     def tearDown(self):
-        self.testbed.deactivate()
+        #self.testbed.deactivate()
         pass

@@ -3,15 +3,15 @@ Test for custom param coersion back and forth between REST input and native repr
 """
 
 from tests import BaseCase
-from google.appengine.datastore.datastore_query import Cursor
-from google.appengine.api.datastore_errors import BadValueError
+#from google.appengine.datastore.datastore_query import Cursor
+#from google.appengine.api.datastore_errors import BadValueError
 import params
 import datetime
 
 test_dtstr = "1982-09-02T05:30:15Z"
 test_dtobj = datetime.datetime(year=1982, month=9, day=2, hour=5, minute=30, second=15)
 
-
+'''
 class CoerceToCursorTests(BaseCase):
     """ Tests for voluptuous coersion to str to ndb cursor object """
 
@@ -21,13 +21,14 @@ class CoerceToCursorTests(BaseCase):
         self.assertIsNone(params.coerce_to_cursor(""))
         self.assertIsNone(params.coerce_to_cursor([]))
 
-    def test_error(self):
-        self.assertRaises(BadValueError, params.coerce_to_cursor, "invalid")
+    #def test_error(self):
+    #    self.assertRaises(BadValueError, params.coerce_to_cursor, "invalid")
 
     def test_base(self):
         cursor_str = "CkIKGgoNbW9kaWZpZWRfZGF0ZRIJCOLF0ZHYhM0CEiBqCnN-YXJ0cy02MTJyEgsSBUV2ZW50GICAgMDUxpgKDBgAIAE="
         result = params.coerce_to_cursor(cursor_str)
         self.assertTrue(isinstance(result, Cursor))
+'''
 
 
 class CoerceToDatetimeTests(BaseCase):

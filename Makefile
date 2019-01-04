@@ -5,7 +5,7 @@ clean:
 
 install:
 	pip install -Ur requirements_dev.txt
-	pip install -Ur requirements.txt -t ./external
+	pip install -Ur requirements.txt # -t ./external
 	@echo "Dependencies for rest_core installed."
 
 unit:
@@ -14,7 +14,8 @@ ifeq ($(filter-out $@,$(MAKECMDGOALS)), "")
 else
 	@echo "Running only tests in $(filter-out $@,$(MAKECMDGOALS))"
 endif
-	nosetests -sv -a is_unit --with-gae --gae-application=rest_core --with-yanc $(filter-out $@,$(MAKECMDGOALS))
+	#nosetests -sv -a is_unit --with-gae --gae-application=rest_core --with-yanc $(filter-out $@,$(MAKECMDGOALS))
+	nosetests
 
 integrations:
 ifeq ($(filter-out $@,$(MAKECMDGOALS)), "")

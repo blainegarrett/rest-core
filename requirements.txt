@@ -2,4 +2,5 @@
 
 pytz
 voluptuous
-git+git://github.com/digibodies/core.git@v0.0.2#egg=core
+git+git://github.com/digibodies/core.git@core_model_properties
+#egg=core
