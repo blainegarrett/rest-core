@@ -219,6 +219,7 @@ class RestField(object):
             logging.error(field)
             logging.exception(e.message)
             return None
+        return getattr(obj, field, None)
 
     def to_resource(self, data):
         """

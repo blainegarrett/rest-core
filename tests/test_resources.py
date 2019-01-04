@@ -1,5 +1,7 @@
 import voluptuous
 from tests import BaseCase
+from core import models
+
 import resources
 
 
@@ -272,6 +274,38 @@ class ResourceFieldToResourceTests(RestBaseCase):
         r = resources.RestField('size', validator=voluptuous.Coerce(int))
         self.assertRaises(resources.RestValueException, r.to_resource, input_data)
         # Size cannot be coerced to an int...
+
+
+class TestModel(models.Model):
+    name = models.StringProperty()
+    title = models.StringProperty()
+    child_resource_ids = models.StringProperty(repeated=True)
+    total = models.FloatProperty()
+    data = models.JsonProperty()
+    start_date = models.DateTimeProperty()
+    is_alive = models.BooleanProperty()
+    is_available = models.BooleanProperty(default=True)
+
+
+class ResourceModelTests(RestBaseCase):
+    """
+    Tests surrounding using core models
+    """
+
+    def test_base(self):
+        FIELDS = [
+            resources.ResourceIdField(output_only=True),  # TODO: This should only be on meta?
+            resources.RestField(TestModel.name, required=True),
+            resources.RestField(TestModel.title, required=True),
+        ]
+
+        model = TestModel()
+        model.id = 'asdf'
+        model.name = 'Bob'
+        model.title = 'President'
+
+        r = resources.Resource(model, FIELDS).to_dict(verbose=True)
+        self.assertDictEqual(r, {'_meta': {'is_verbose': True, 'resource_type': 'TestModel'}, 'title': 'President', 'name': 'Bob', 'resource_id': 'asdf'})
 
 
 class RestIntegrationTests(RestBaseCase):
